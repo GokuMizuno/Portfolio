@@ -18,24 +18,29 @@ extern "C"
 		//int arr[SIZE][SIZE];  //not allowed by c99 standards.  FIX LATER
 		//using calloc, as we do not want garbage data.
 		int arr[4][4];// = (int*)calloc((SIZE*SIZE), sizeof(int));
-		int i = 0;
 		for (i = 0; i < SIZE; i++)
 		{
 			//all arr[i][0]
-			asm("movl $10 %eax;"
-			"movl $20 %ebx;"
-				"addl $ebx %eax;"
-				"movl %eax arr[i][0];"
-				);
+			__asm {
+				mov $10 %eax
+				mov $20 %ebx
+				add %ebx %eax
+				mov %eax arr[i][0];
+			};
 			//all arr[i][1]
-			asm("movl $20 %eax;"
-				"movl $10 %ebx;"
-				"subl %ebx %eax;"
+			__asm {
+				movl $20 %eax;
+				movl $10 %ebx;
+				subl %ebx %eax;
+				movl %eax arr[i][1];
 				//FINISH ALL THIS
-			);
+			};
 			//all arr[i][2]
+			//multiply i by 4
+			arr[i][2] = i << 2;
 
 			//all arr[i][3]
+			arr[i][3] = rand()&1;
 		}
 	}
 }
